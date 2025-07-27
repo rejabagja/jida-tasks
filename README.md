@@ -13,7 +13,7 @@ This is a Next.js project with Prisma ORM and PostgreSQL database.
 ### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone <repository-url> --branch tugas/pertemuan-8
 cd jida-tasks
 ```
 
