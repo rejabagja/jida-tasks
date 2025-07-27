@@ -26,7 +26,7 @@ pnpm install
 ### 3. Environment Setup
 
 - Install PostgreSQL on your system
-- Create a new database named `jidatasks`
+- Create a new database named `jidatasks` (optional - app will create it automatically)
 - Create `.env` file and insert DATABASE_URL variable:
 
 ```env
@@ -35,14 +35,10 @@ DATABASE_URL="postgresql://username:password@localhost:5432/jidatasks?schema=pub
 
 - Generate NextAuth secret:
 
+  This step will generate auth secret and automatically added into .env.local
+
 ```bash
 pnpx auth secret
-```
-
-- Add the generated secret to `.env.local`:
-
-```env
-AUTH_SECRET="your-generated-secret"
 ```
 
 ### 4. Prisma Setup
