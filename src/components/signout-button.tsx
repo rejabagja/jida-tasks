@@ -27,7 +27,7 @@ export default function SignoutButton({
         duration: 1500,
         position: 'top-center',
       });
-      await signOut();
+      await signOut({ callbackUrl: '/' });
     } catch (error) {
       toast.error('Failed to sign out', {
         duration: 1500,

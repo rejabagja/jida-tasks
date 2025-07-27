@@ -19,10 +19,10 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const [errorMessage, formAction, isPending] = useActionState(
-    registerUser,
-    undefined
-  );
+  const [status, formAction, isPending] = useActionState(registerUser, {
+    message: '',
+    success: false,
+  });
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
@@ -33,8 +33,17 @@ export function RegisterForm({
           <CardDescription>
             Fill the form below to register to your account
           </CardDescription>
-          {errorMessage && (
-            <div className="text-destructive text-sm">*{errorMessage}</div>
+          {status.message.length > 0 && (
+            <div
+              className={cn(
+                'text-sm text-center p-4 rounded-sm',
+                status.success
+                  ? 'text-green-600 bg-green-200'
+                  : 'text-destructive bg-red-200'
+              )}
+            >
+              {status.message}
+            </div>
           )}
         </CardHeader>
         <CardContent>
@@ -73,8 +82,13 @@ export function RegisterForm({
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
-                  Register
+                <Button
+                  type="submit"
+                  className="w-full"
+                  aria-disabled={isPending}
+                  disabled={isPending}
+                >
+                  {isPending ? 'Registering...' : 'Register'}
                 </Button>
               </div>
             </div>

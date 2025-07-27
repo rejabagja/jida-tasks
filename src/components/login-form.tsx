@@ -39,7 +39,9 @@ export function LoginForm({
             Enter your email below to login to your account
           </CardDescription>
           {errorMessage && (
-            <div className="text-destructive text-sm">*{errorMessage}</div>
+            <div className="text-destructive text-sm p-4 bg-red-200 rounded-sm text-center">
+              {errorMessage}
+            </div>
           )}
         </CardHeader>
         <CardContent>
