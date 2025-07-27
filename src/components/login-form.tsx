@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,11 +13,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { LogIn } from 'lucide-react';
+import { useActionState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { authenticate } from '@/lib/actions';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  );
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
@@ -27,9 +38,12 @@ export function LoginForm({
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>
+          {errorMessage && (
+            <div className="text-destructive text-sm">*{errorMessage}</div>
+          )}
         </CardHeader>
         <CardContent>
-          <form>
+          <form action={formAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -37,6 +51,7 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="Enter your registered email"
+                  name="email"
                   required
                 />
               </div>
@@ -48,12 +63,19 @@ export function LoginForm({
                   id="password"
                   type="password"
                   placeholder="******"
+                  name="password"
                   required
                 />
               </div>
+              <input type="hidden" name="redirectTo" value={callbackUrl} />
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
-                  Login
+                <Button
+                  type="submit"
+                  className="w-full"
+                  aria-disabled={isPending}
+                  disabled={isPending}
+                >
+                  {isPending ? 'Logging in...' : 'Login'}
                 </Button>
               </div>
             </div>
